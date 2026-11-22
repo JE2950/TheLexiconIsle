@@ -154,24 +154,90 @@ input.name{font:inherit;font-size:22px;padding:8px 12px;width:100%;border:0;box-
 .cert{width:760px;background:#fffaf0;border:10px double var(--brass);padding:26px 34px;text-align:center}
 .cert h2{font-size:40px;margin:6px 0;color:var(--brass-lo)}
 .cert .nm{font-size:48px;font-weight:700;margin:6px 0}
+
+.hint{font-size:15px;color:var(--ink-soft);padding:6px 2px}
+.howto p{display:flex;gap:14px;align-items:center;margin:10px 0}
+.howto .k{flex:0 0 74px;display:grid;place-items:center}
+.howto .hotk::before{content:'';width:22px;height:22px;border:3px solid #fff;background:#ffcc3399;box-shadow:0 0 0 2px #000}
+.howto .pzk svg{width:46px;height:46px;background:radial-gradient(circle,#ffe08a,#c98a12);border-radius:50%;padding:6px;border:3px solid #2a1e12}
+.howto .ark svg{width:46px;height:46px;background:#557;border-radius:6px}
+.howto .gok{background:var(--gold);font-weight:700;font-size:13px;padding:6px 4px}
+
+#flash{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,#fff8 0,#ffcc3333 40%,transparent 70%);opacity:0;z-index:30}
+#flash.go{animation:fl 1.2s ease-out}
+@keyframes fl{15%{opacity:1}100%{opacity:0}}
+.item img{width:44px;height:44px;object-fit:contain}
+.item.new{animation:newi 1.4s ease-out}
+@keyframes newi{0%,50%{box-shadow:0 0 0 4px var(--gold),0 0 22px var(--gold)}}
+.ph2{display:flex;justify-content:space-between;align-items:center}
+#stars{color:var(--gold);font-weight:700;font-size:15px}
+/* hint glow */
+.hinted{animation:hintg .7s ease-in-out infinite!important;outline:4px solid var(--gold);outline-offset:4px;z-index:6}
+.arrow.hinted{outline:none;filter:drop-shadow(0 0 12px #ffcc33) drop-shadow(0 0 4px #ffcc33)}
+@keyframes hintg{50%{transform:scale(1.25)}}
+/* narration panel pulses when it changes */
+#say.pulse{animation:sayp .6s ease-out}
+@keyframes sayp{0%{box-shadow:inset 3px 3px 0 var(--parch-lo),0 0 0 4px var(--gold)}100%{box-shadow:inset 3px 3px 0 var(--parch-lo),0 0 0 0 transparent}}
+/* caption bubble for things you look at */
+#cap{position:absolute;transform:translate(-50%,calc(-100% - 24px));max-width:380px;background:var(--parch);border:3px solid var(--ink);padding:10px 14px;font-size:17px;line-height:1.4;
+  box-shadow:4px 4px 0 #0006;z-index:12;display:none;cursor:pointer}
+#cap b{display:block;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#7a3b10;margin-bottom:2px}
+#cap::after{content:'';position:absolute;left:50%;bottom:-14px;margin-left:-10px;border:10px solid transparent;border-top-color:var(--ink)}
+#cap.below{transform:translate(-50%,28px)}
+#cap.below::after{bottom:auto;top:-23px;border-top-color:transparent;border-bottom-color:var(--ink)}
+#cap.open{display:block;animation:capin .18s ease-out}
+@keyframes capin{from{opacity:0;margin-top:8px}}
+/* dialogue popup with portrait */
+#talk{position:absolute;left:40px;right:40px;bottom:24px;display:none;gap:18px;background:var(--parch);padding:16px;z-index:22;
+  box-shadow:0 0 0 4px var(--ink),inset 3px 3px 0 #fff8,inset -4px -4px 0 var(--parch-lo),0 18px 40px #000b}
+#talk.open{display:flex;animation:talkin .25s ease-out}
+@keyframes talkin{from{opacity:0;transform:translateY(20px)}}
+#kFace{width:210px;height:210px;object-fit:cover;border:4px solid var(--ink);flex:0 0 210px;box-shadow:4px 4px 0 #0004}
+.tBody{flex:1;display:flex;flex-direction:column}
+.tWho{font-size:22px;margin-bottom:8px}.tWho b{color:#7a3b10}.tWho span{font-size:16px;color:var(--ink-soft)}
+#kText{flex:1;font-size:21px;line-height:1.45}
+.tCtrl{display:flex;justify-content:flex-end}
+#mHead > div:first-child{flex:1}
+#mSub{font-size:15px;color:#e8d6ad;margin-top:2px;max-width:560px;line-height:1.35}
+.gap{width:12px}
+.slot.life{color:#ff6b6b}
+.qlabel{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.small{font-size:14px;color:#555}
+.radios button.go{background:var(--gold)}
+.shake{animation:shk .35s}
+@keyframes shk{25%,75%{transform:translateX(-6px)}50%{transform:translateX(6px)}}
+.cert .small{font-size:15px}.cstars{font-size:22px;color:#a07000;font-weight:700}
+.report{margin-top:8px}.report summary{cursor:pointer;font-weight:600}
+.report table{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}.report td{padding:3px 6px;border-bottom:1px solid #aaa}
+.report tr.gh td{font-weight:700;background:#ddd}.bar{display:block;width:140px;height:10px;background:#999;box-shadow:inset 1px 1px 0 #0005}.bar i{display:block;height:100%}
+.hot:focus:not(:focus-visible) + .tip{display:none}
 </style>
 </head>
 <body>
 <div id="fit"><div id="win">
   <div id="bar">
     <button class="tb" id="btnMap" title="Map (M)">Map</button>
+    <button class="tb" id="btnHint" title="A hint about what to do next">Hint</button>
     <div class="tt" id="tt">The Lexicon Isle</div>
     <button class="tb" id="btnVoice" title="Narrator on or off" aria-pressed="true">Voice</button>
     <button class="tb" id="btnMusic" title="Music on or off" aria-pressed="true">Music</button>
+    <button class="tb" id="btnHelp" title="How to play">Help</button>
     <button class="tb" id="btnSetup" title="Set Up">Set Up</button>
   </div>
   <div id="scene">
     <img class="bg" id="bg" alt="">
     <div class="layer" id="marks"></div>
     <div class="layer" id="hots"></div>
-    <div id="machine">
+    <div id="cap" role="status"></div>
+    <div id="flash"></div>
+    <div id="talk" role="dialog" aria-label="Conversation">
+      <img id="kFace" alt="">
+      <div class="tBody"><div class="tWho"><b id="kName"></b> <span id="kRole"></span></div><div id="kText"></div>
+        <div class="tCtrl"><button class="mbtn" id="kNext">Go on ▶</button></div></div>
+    </div>
+    <div id="machine" role="dialog" aria-label="Puzzle">
       <i class="rivet" style="left:6px;top:6px"></i><i class="rivet" style="right:6px;top:6px"></i><i class="rivet" style="left:6px;bottom:6px"></i><i class="rivet" style="right:6px;bottom:6px"></i>
-      <div id="mHead"><h2 id="mTitle"></h2><div id="slots"></div></div>
+      <div id="mHead"><div><h2 id="mTitle"></h2><div id="mSub"></div></div><div id="slots"></div></div>
       <div id="mScreen"><div class="prompt" id="mPrompt"></div><div id="ans"></div><div id="mFeed"></div></div>
       <div id="mCtrl"><button class="mbtn grey" id="mHow">How?</button><button class="mbtn grey" id="mLeave">Leave</button><span class="sp"></span><button class="mbtn" id="mNext" disabled>Next ▶</button></div>
     </div>
@@ -179,15 +245,17 @@ input.name{font:inherit;font-size:22px;padding:8px 12px;width:100%;border:0;box-
     <div class="dlg" id="dlg"><div id="dlgIn"></div></div>
   </div>
   <div id="bottom">
-    <div id="say"><div id="sayText"></div><div id="sayBtns"><button class="replay" id="replay" title="Hear it again">🔊</button><button class="goon" id="goon" disabled>Go on ▶</button></div></div>
-    <div id="pocket"><h4>Your pockets</h4><div id="items"></div><div id="stones"></div></div>
+    <div id="say"><div id="sayText"></div><div id="sayBtns"><button class="replay" id="replay" title="Hear it again" aria-label="Hear it again">🔊</button><button class="goon" id="goon" disabled>Go on ▶</button></div></div>
+    <div id="pocket"><div class="ph2"><h4>Your pockets</h4><span id="stars"></span></div><div id="items"></div><div id="stones"></div></div>
   </div>
 </div></div>
 <audio id="music" src="music/theme.mp3" loop preload="none"></audio>
-<script src="bank.js"></script>
-<script src="atom.js"></script>
-<script src="gl_style.js"></script>
-<script src="vr.js"></script>
-<script src="game.js"></script>
+<script src="js/vr/bank.js"></script>
+<script src="js/vr/atom.js"></script>
+<script src="js/vr/gl_style.js"></script>
+<script src="js/vr/vr.js"></script>
+<script src="js/data.js"></script>
+<script src="js/story.js"></script>
+<script src="js/game.js"></script>
 </body>
 </html>
