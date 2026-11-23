@@ -38,8 +38,13 @@ The question engine is the Station Zero engine from the **VR** repo, copied unch
 - `img/`: painted scenes; `img/ui/`: portraits and item icons (all made with Gemini).
 - `music/theme.mp3`: optional. If present it loops; if not, the game plays its own tracker-style tune.
 
+## What's on the island
+- **Places:** Smugglers' Jetty (start), Lighthouse Village (hub), then five of Whispering Wood, Echo Caves, The Gorge, Clockwork Tower, Weaver's Hut, The Lamp Room, Harbour Market, The Windmill, The Ruined Abbey, The Shipwreck and The Observatory, ending at The Keeper's Gate or The Standing Stones.
+- **Characters:** Maren the lighthouse keeper (gives the map), Ossian the weaver (lives in the hut), and Pip, Brother Aldo, Captain Rook and Nell, who turn up in different places each voyage, chat, and sometimes carry an item you need.
+- **Items:** the map, a storm lantern (dark paths), a brass key (locked doors) and the weaver's shuttle.
+
 ## Adding a place, character or item
-Each entry in `js/data.js` has `art: true` or `art: false`. Entries with `art: false` are written and ready (the lamp room, harbour market, windmill, ruined abbey, shipwreck, observatory, glasshouse, standing stones; Pip, Brother Aldo, Captain Rook and Nell; rope, crowbar, compass and oil can). Add the picture at the `img` path, check the hotspot and arrow positions against it, set `art: true`, and the generator starts using it. Then run the tests.
+Each entry in `js/data.js` has `art: true` or `art: false`. Two are written and waiting for art: **The Glasshouse** (`img/glasshouse.jpg`) and four lock items, **rope, crowbar, compass and oil can** (`img/ui/rope.png` and so on, 128 × 128 on the dark brown background). Add the picture at the `img` path, check the hotspot and arrow positions against it, set `art: true`, and the generator starts using it. Then run the tests.
 
 ## Tests
 - `node tools/test_story.js 3000` builds 3,000 islands and checks each can be finished and all text fills. Add `--all-art` to test with every planned place, character and item switched on.

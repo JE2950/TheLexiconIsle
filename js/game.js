@@ -137,13 +137,14 @@ function hotspots(id) {
   if (c) { const fixedHere = CHARS[c].fixed === id; const spot = P.spot || { x: 50, y: 50 }; list.push({ kind: 'char', c, x: spot.x, y: spot.y, n: fixedHere || id === PLAN.route[1] ? CHARS[c].n : CHARS[c].n + ', ' + CHARS[c].title }); }
   return list;
 }
+const edge = x => x < 15 ? 'tl' : x > 85 ? 'tr' : '';
 function drawHots() {
   const id = G.at, P = PLACES[id];
-  let h = hotspots(id).map((s, k) => `<button class="hot ${G.seen[id + k] ? 'seen' : ''} ${s.kind}" data-k="${k}" style="left:${s.x}%;top:${s.y}%" aria-label="${s.n}"></button><span class="tip" style="left:${s.x}%;top:${s.y}%">${s.n}</span>`).join('');
+  let h = hotspots(id).map((s, k) => `<button class="hot ${G.seen[id + k] ? 'seen' : ''} ${s.kind}" data-k="${k}" style="left:${s.x}%;top:${s.y}%" aria-label="${s.n}"></button><span class="tip ${edge(s.x)}" style="left:${s.x}%;top:${s.y}%">${s.n}</span>`).join('');
   ['back', 'fwd'].forEach(w => {
     const e = P.exits && P.exits[w]; const to = w === 'back' ? prevOf(id) : nextOf(id);
     if (!e || !to) return;
-    h += `<button class="arrow" data-w="${w}" style="left:${e.x}%;top:${e.y}%" aria-label="To ${PLACES[to].name}"><svg viewBox="0 0 64 64"><path d="${ARROW[e.d]}" fill="#fff" stroke="#000" stroke-width="3" stroke-linejoin="round"/></svg></button><span class="tip" style="left:${e.x}%;top:${e.y}%">To ${PLACES[to].name}</span>`;
+    h += `<button class="arrow" data-w="${w}" style="left:${e.x}%;top:${e.y}%" aria-label="To ${PLACES[to].name}"><svg viewBox="0 0 64 64"><path d="${ARROW[e.d]}" fill="#fff" stroke="#000" stroke-width="3" stroke-linejoin="round"/></svg></button><span class="tip ${edge(e.x)}" style="left:${e.x}%;top:${e.y}%">To ${PLACES[to].name}</span>`;
   });
   $('hots').innerHTML = h;
 }
@@ -186,6 +187,7 @@ function drawMarks() {
   if (id === 'cave') ['O', 'P', 'E', 'N', 'S'].forEach((c, i) => { if (i < p || done) h += `<span class="mark dial" style="left:${43.6 + i * 3}%;top:45.8%">${c}</span>`; });
   if (id === 'wood' && done) h += `<span class="mark carve" style="left:23%;top:52%">◀ ${PLACES[prevOf(id)].short}</span><span class="mark carve" style="left:45%;top:46%">${PLACES[nextOf(id)].short} ▶</span>`;
   if (id === 'tower') [[55.7, 46.9], [65.6, 57.8], [61.3, 70.8], [50.4, 70.8], [46.5, 57.8]].forEach(([x, y], i) => { if (i < p || done) h += `<span class="mark cog" style="left:${x}%;top:${y}%"></span>`; });
+  if (PLACES[id].lenses) PLACES[id].lenses.forEach(([x, y], i) => { if (i < p || done) h += `<span class="mark lens" style="left:${x}%;top:${y}%"></span>`; });
   if (PLACES[id].hollows) PLAN.puzzles.forEach(q => { const S = PLAN.stones[q]; if (G.stones[q]) { const [x, y] = PLACES[id].hollows[S.slot]; h += `<span class="mark gem" style="left:${x}%;top:${y}%;background:${S.colour};color:${S.colour}"></span>`; } });
   $('marks').innerHTML = h;
 }
