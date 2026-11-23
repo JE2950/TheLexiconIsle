@@ -29,7 +29,8 @@ with sync_playwright() as p:
         def solve():
             n = 0
             while ev("!!M") and n < 40:
-                q = ev("({k:M.q.kind,a:M.q.answer})")
+                q = ev("({k:M.q.kind,a:M.q.answer,key:M.q.key})")
+                if not str(q['key']).startswith('atom:'): errs.append('non-Atom question ' + str(q['key']))
                 if q['k'] == 'mc': pg.click(f'#ans [data-o="{q["a"]}"]')
                 elif q['k'] == 'pair': pg.click(f'#ans [data-g="0"][data-o="{q["a"][0]}"]'); pg.click(f'#ans [data-g="1"][data-o="{q["a"][1]}"]')
                 else: [pg.click(f'#ans [data-o="{a}"]') for a in q['a']]

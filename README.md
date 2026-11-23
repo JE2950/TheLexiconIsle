@@ -28,7 +28,11 @@ The same number always builds the same island, so a teacher can give a class one
 - Keys: A to E answer · Enter = Go on / Next · H = How? · M = Map · Esc closes a window.
 
 ## Questions
-The question engine is the Station Zero engine from the **VR** repo, copied unchanged into `js/vr/`: `vr.js` (generators and answer controls), `bank.js` (dictionary-checked word puzzles), `atom.js` (the hand-entered Atom Learning questions) and `gl_style.js` (GL-format questions). All 37 topics and the Year 4 / 5 / 6+ setting work as in Station Zero, and topics a pupil gets wrong come back more often. To update the questions, copy those four files across again.
+Every question comes from the hand-entered **Atom Learning** bank (sets 1 and 2, 187 questions) in `js/vr/atom.js`. The game does not use the engine's generated questions or the GL-style originals.
+- Each machine draws from its topic group (Finding words, Building words, Codes and sequences, Vocabulary, Logic) at the pupil's year level or below. Year 4 sees 136 questions, Year 5 sees 157, Year 6+ sees all 187.
+- Atom has few vocabulary questions below Year 6 (6 at Year 4, 11 at Year 5), so at those levels the vocabulary machine tops up with other Atom questions at the same level.
+- An island does not repeat a question until that machine's pool runs out.
+- `js/vr/vr.js` and `js/vr/bank.js` are the Station Zero engine, copied unchanged; the game uses its answer controls, topic names, methods and record keeping. To add questions, add them to `atom.js` in the VR repo and copy it across.
 
 ## Files
 - `index.html`: the window, layout and styles.

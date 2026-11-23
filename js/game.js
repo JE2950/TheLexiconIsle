@@ -230,7 +230,35 @@ function meet(c) {
 }
 
 /* ════════ MACHINES ════════ */
+/* ════════ QUESTIONS: Atom Learning bank only ════════
+   Every question comes from the hand-entered Atom Learning bank (js/vr/atom.js).
+   A machine draws from its topic group at the pupil's year level or below. If that
+   group has too few questions at that level (Year 4 vocabulary has six), it is
+   topped up with other Atom questions at that level. Questions are not repeated on
+   an island until the pool runs out. */
 const groupTopics = g => g === 'mixed' || !g ? null : GROUPS.find(x => x.id === g).topics.map(t => t[0]);
+function atomPool(group) {
+  const atLevel = ATOM.filter(it => it.lv <= age() && TOPICS[it.t]);
+  const ts = groupTopics(group);
+  const pool = ts ? atLevel.filter(it => ts.includes(it.t)) : atLevel;
+  return pool.length >= 15 ? pool : atLevel;
+}
+function atomQuestion(group) {
+  G.used = G.used || [];
+  const pool = atomPool(group);
+  let fresh = pool.filter(it => !G.used.includes(it.id));
+  if (!fresh.length) { G.used = G.used.filter(id => !pool.some(it => it.id === id)); fresh = pool; }
+  const recent = (G.recentT || []).slice(-2);
+  const pref = fresh.filter(it => !recent.includes(it.t));
+  const it = pick(pref.length ? pref : fresh);
+  G.used.push(it.id); G.recentT = recent.concat(it.t); saveG();
+  let q;
+  if (it.g) { const Gs = it.g.map(x => shuffle(x)); q = { kind: 'pair', groups: Gs, answer: [Gs[0].indexOf(it.a[0]), Gs[1].indexOf(it.a[1])] }; }
+  else if (Array.isArray(it.a)) { const o = shuffle(it.o); q = { kind: 'two', options: o, answer: it.a.map(w => o.indexOf(w)).sort((x, y) => x - y) }; }
+  else { const o = it.t === 'jumsent' && /order|sentence/.test(it.p) ? it.o.slice() : shuffle(it.o); q = { kind: 'mc', options: o, answer: o.indexOf(it.a) }; }
+  return Object.assign(q, { fixed: true, key: 'atom:' + it.id, explain: it.e, topic: it.t, label: TOPICS[it.t].name, how: TOPICS[it.t].how,
+    prompt: it.p + (it.s ? box(it.s) : '') + (STRIP_TOPICS.includes(it.t) ? strip() : '') });
+}
 let M = null;
 function openMachine(id) {
   const P = PLACES[id], isFinal = P.role === 'final';
@@ -251,7 +279,7 @@ function drawSlots() {
   $('slots').innerHTML = h;
 }
 function nextQ() {
-  const q = makeQuestion(groupTopics(M.group));
+  const q = atomQuestion(M.group);
   M.q = q; M.tries = 0;
   $('mPrompt').innerHTML = `<div class="qlabel">${q.label}</div>${q.prompt}`;
   $('mFeed').innerHTML = '';
