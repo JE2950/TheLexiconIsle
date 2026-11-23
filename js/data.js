@@ -29,10 +29,10 @@ const ITEMS = {
   lantern: { n: 'a storm lantern', img: 'img/ui/lantern.png', art: true, lock: 'dark' },
   key:     { n: 'a brass key', img: 'img/ui/key.png', art: true, lock: 'locked' },
   shuttle: { n: "a weaver's shuttle", img: 'img/ui/shuttle.png', art: true },
-  rope:    { n: 'a coil of rope', img: 'img/ui/rope.png', art: false, lock: 'climb' },
-  crowbar: { n: 'an iron crowbar', img: 'img/ui/crowbar.png', art: false, lock: 'boarded' },
-  compass: { n: 'a brass compass', img: 'img/ui/compass.png', art: false, lock: 'fog' },
-  oilcan:  { n: 'an oil can', img: 'img/ui/oilcan.png', art: false, lock: 'rusted' },
+  rope:    { n: 'a coil of rope', img: 'img/ui/rope.png', art: true, lock: 'climb' },
+  crowbar: { n: 'an iron crowbar', img: 'img/ui/crowbar.png', art: true, lock: 'boarded' },
+  compass: { n: 'a brass compass', img: 'img/ui/compass.png', art: true, lock: 'fog' },
+  oilcan:  { n: 'an oil can', img: 'img/ui/oilcan.png', art: true, lock: 'rusted' },
 };
 /* what a blocked path says, by lock type ({place} is where you are trying to go) */
 const LOCKTEXT = {
@@ -164,7 +164,7 @@ const PLACES = {
     spot: { x: 46, y: 36 },
     exits: { back: { x: 6, y: 70, d: 'left' }, fwd: { x: 94, y: 50, d: 'right' } },
   },
-  /* places waiting for art (art: false). Turn on when img exists. */
+  /* more puzzle places */
   lamp: {
     role: 'puzzle', name: 'The Lamp Room', short: 'LAMP', img: 'img/lamp.jpg', art: true, locks: ['locked', 'climb'],
     first: ['You climb the spiral stairs to the top of the lighthouse. The great lamp flickers weakly in the middle of the room, and rain lashes the windows.',
@@ -251,13 +251,19 @@ const PLACES = {
     spot: { x: 14, y: 76 }, exits: { back: { x: 6, y: 92, d: 'left' }, fwd: { x: 94, y: 92, d: 'right' } },
   },
   glasshouse: {
-    role: 'puzzle', name: 'The Glasshouse', short: 'GLASS', img: 'img/glasshouse.jpg', art: false, locks: ['rusted', 'boarded'],
-    first: ['An old glasshouse stands in an overgrown orchard. Vines press against the broken panes.', 'Pipes run along the wall to a big iron valve wheel and five empty gauges.'],
-    looks: [{ x: 20, y: 50, n: 'Beehives', t: 'The bees fly in perfect silence. Not a single buzz.' }, { x: 75, y: 35, n: 'Vines', t: 'The plant labels in the pots are all blank. Tomato? Pea? Who knows.' }],
-    pz: { x: 55, y: 60, n: 'The valve wheel', title: 'The Valve Wheel', slot: () => '◍',
+    role: 'puzzle', name: 'The Glasshouse', short: 'GLASS', img: 'img/glasshouse.jpg', art: true, locks: ['rusted', 'boarded'],
+    first: ['An old glasshouse stands in an overgrown orchard. Vines press against the broken panes.',
+      'Copper pipes run along the back wall to a big iron valve wheel. Above it, five brass gauges all read zero.'],
+    looks: [
+      { x: 76, y: 56, n: 'Beehives', t: 'The bees fly in perfect silence. Not a single buzz.' },
+      { x: 84, y: 76, n: 'Seed trays', t: 'Rows of seedlings, each with a little wooden label. Every label is blank. Tomato? Pea? Who knows.' },
+      { x: 6, y: 30, n: 'Climbing roses', t: 'Roses climb the glass. They should smell wonderful, but the island seems to be holding its breath.' },
+    ],
+    pz: { x: 50, y: 64, n: 'The valve wheel', title: 'The Valve Wheel', slot: () => '◍',
       intro: 'Each gauge has a puzzle printed on its glass. Solve it and the needle swings up.',
       win: 'Steam hisses through the pipes and the glasshouse warms. In the biggest pot, a {stone} glows {colour}.' },
-    spot: { x: 30, y: 70 }, exits: { back: { x: 8, y: 85, d: 'left' }, fwd: { x: 92, y: 85, d: 'right' } },
+    gauges: [[31, 35], [41, 35], [50, 35], [60, 35], [69, 35]],
+    spot: { x: 28, y: 74 }, exits: { back: { x: 6, y: 92, d: 'left' }, fwd: { x: 94, y: 92, d: 'right' } },
   },
   /* finals */
   gate: {

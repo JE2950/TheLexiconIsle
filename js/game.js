@@ -101,7 +101,7 @@ function give(i) {
 }
 function drawPocket() {
   const shown = ['map', ...Object.keys(ITEMS).filter(k => k !== 'map' && has(k))];
-  const cells = Array.from({ length: 5 }, (_, i) => {
+  const cells = Array.from({ length: 8 }, (_, i) => {
     const k = shown[i]; if (!k || !has(k)) return '<div class="item"></div>';
     return `<div class="item" data-i="${k}" title="${ITEMS[k].n}"><img src="${ITEMS[k].img}" alt="${ITEMS[k].n}"></div>`;
   });
@@ -188,6 +188,7 @@ function drawMarks() {
   if (id === 'wood' && done) h += `<span class="mark carve" style="left:23%;top:52%">◀ ${PLACES[prevOf(id)].short}</span><span class="mark carve" style="left:45%;top:46%">${PLACES[nextOf(id)].short} ▶</span>`;
   if (id === 'tower') [[55.7, 46.9], [65.6, 57.8], [61.3, 70.8], [50.4, 70.8], [46.5, 57.8]].forEach(([x, y], i) => { if (i < p || done) h += `<span class="mark cog" style="left:${x}%;top:${y}%"></span>`; });
   if (PLACES[id].lenses) PLACES[id].lenses.forEach(([x, y], i) => { if (i < p || done) h += `<span class="mark lens" style="left:${x}%;top:${y}%"></span>`; });
+  if (PLACES[id].gauges) PLACES[id].gauges.forEach(([x, y], i) => { if (i < p || done) h += `<span class="mark gauge" style="left:${x}%;top:${y}%"></span>`; });
   if (PLACES[id].hollows) PLAN.puzzles.forEach(q => { const S = PLAN.stones[q]; if (G.stones[q]) { const [x, y] = PLACES[id].hollows[S.slot]; h += `<span class="mark gem" style="left:${x}%;top:${y}%;background:${S.colour};color:${S.colour}"></span>`; } });
   $('marks').innerHTML = h;
 }
